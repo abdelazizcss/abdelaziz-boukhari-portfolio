@@ -1,15 +1,15 @@
 <!DOCTYPE html>
-<html lang="ar" dir="rtl">
+<html lang="en" dir="ltr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="البورتفوليو الشخصي لـ abdelaziz boukhari - web dev">
-    <title>abdelaziz boukhari - البورتفوليو الشخصي</title>
+    <meta name="description" content="Portfolio of abdelaziz boukhari - web dev">
+    <title>abdelaziz boukhari - Professional Portfolio</title>
     <link rel="stylesheet" href="style.css">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="dark-theme">
+<body class="cyberpunk-theme" data-theme="cyberpunk">
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
@@ -25,6 +25,16 @@
                 <a href="#skills" class="nav-link">Skills</a>
                 <a href="#projects" class="nav-link">Projects</a>
                 <a href="#contact" class="nav-link">Contact</a>
+            </div>
+            
+            <!-- Theme Switcher -->
+            <div class="theme-switcher">
+                <button class="theme-btn" data-theme="dark" title="Dark Theme">🌙</button>
+                <button class="theme-btn" data-theme="light" title="Light Theme">☀️</button>
+                <button class="theme-btn active" data-theme="cyberpunk" title="Cyberpunk Theme">🌐</button>
+                <button class="theme-btn" data-theme="elegant" title="Elegant Theme">✨</button>
+                <button class="theme-btn" data-theme="ocean" title="Ocean Theme">🌊</button>
+                <button class="theme-btn" data-theme="corporate" title="Corporate Theme">🏢</button>
             </div>
             
             <!-- Mobile Menu Toggle -->
@@ -334,6 +344,54 @@
         document.querySelectorAll('.skill-card, .project-card, .experience-item').forEach(el => {
             observer.observe(el);
         });
+        
+        // Theme Switcher
+        const themeButtons = document.querySelectorAll('.theme-btn');
+        const body = document.body;
+        
+        // Set initial theme
+        const currentTheme = body.getAttribute('data-theme') || 'cyberpunk';
+        themeButtons.forEach(btn => {
+            btn.classList.remove('active');
+            if (btn.getAttribute('data-theme') === currentTheme) {
+                btn.classList.add('active');
+            }
+        });
+        
+        themeButtons.forEach(btn => {
+            btn.addEventListener('click', function() {
+                const newTheme = this.getAttribute('data-theme');
+                
+                // Remove current theme classes
+                body.className = body.className.replace(/\w+-theme/g, '');
+                
+                // Add new theme class
+                body.classList.add(newTheme + '-theme');
+                body.setAttribute('data-theme', newTheme);
+                
+                // Update active button
+                themeButtons.forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+                
+                // Save theme preference
+                localStorage.setItem('portfolioTheme', newTheme);
+            });
+        });
+        
+        // Load saved theme on page load
+        const savedTheme = localStorage.getItem('portfolioTheme');
+        if (savedTheme) {
+            body.className = body.className.replace(/\w+-theme/g, '');
+            body.classList.add(savedTheme + '-theme');
+            body.setAttribute('data-theme', savedTheme);
+            
+            themeButtons.forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.getAttribute('data-theme') === savedTheme) {
+                    btn.classList.add('active');
+                }
+            });
+        }
     });
     </script>
 </body>
